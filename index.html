@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国保寻踪 · 全国重点文物保护单位田野记录</title>
+
+<style>
+:root{
+  --ink:#1a120b;
+  --rice:#f7f3ec;
+  --rice2:#ede8df;
+  --cinnabar:#c0392b;
+  --cinnabar-deep:#922b21;
+  --bronze:#8b6914;
+  --bronze-light:#c9a84c;
+  --stone:#6b7280;
+  --line:rgba(26,18,11,.1);
+  --shadow:0 6px 28px rgba(26,18,11,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'PingFang SC','Microsoft YaHei','微软雅黑','Helvetica Neue',Arial,sans-serif;
+  background:var(--rice);
+  color:var(--ink);
+  min-height:100vh;
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238b6914' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ===== HEADER ===== */
+header{
+  background:linear-gradient(160deg, #1a120b 0%, #2d1f0e 60%, #1a120b 100%);
+  color:var(--rice);
+  padding:50px 24px 40px;
+  position:relative;overflow:hidden;
+}
+header::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 5 L95 50 L50 95 L5 50 Z' fill='none' stroke='%23c9a84c' stroke-width='0.3' stroke-opacity='0.12'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%23c9a84c' stroke-width='0.3' stroke-opacity='0.08'/%3E%3C/svg%3E") repeat;
+  opacity:.6;
+}
+.hinner{max-width:1100px;margin:0 auto;position:relative;z-index:2}
+.htop{display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap}
+.hicon{
+  width:68px;height:68px;border:2px solid var(--bronze-light);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:30px;
+  background:rgba(201,168,76,.12);flex-shrink:0;
+}
+.htitle h1{
+  font-family:'Songti SC','STSong','SimSun','宋体',Georgia,serif;font-weight:900;font-size:clamp(28px,5vw,52px);
+  line-height:1.1;letter-spacing:.04em;
+}
+.htitle h1 em{font-style:normal;color:var(--bronze-light)}
+.htitle .sub{margin-top:8px;font-size:13px;color:rgba(247,243,236,.6);
+  letter-spacing:.06em;line-height:1.8}
+.hstats{margin-top:28px;display:flex;gap:32px;flex-wrap:wrap}
+.hstat{text-align:center}
+.hstat .n{font-family:'Songti SC','STSong','SimSun','宋体',Georgia,serif;font-weight:700;font-size:28px;color:var(--bronze-light);line-height:1}
+.hstat .l{font-size:11px;color:rgba(247,243,236,.55);letter-spacing:.1em;margin-top:4px}
+.hdivider{width:1px;background:rgba(201,168,76,.2);align-self:stretch}
+
+/* ===== NAV ===== */
+nav{
+  position:sticky;top:0;z-index:30;
+  background:rgba(247,243,236,.94);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.navin{max-width:1100px;margin:0 auto;padding:10px 24px;
+  display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.tab{
+  font-family:'PingFang SC','Microsoft YaHei','微软雅黑',sans-serif;font-size:13px;font-weight:500;
+  padding:7px 16px;border-radius:20px;border:1px solid transparent;
+  cursor:pointer;background:none;color:var(--stone);letter-spacing:.04em;transition:.18s;
+}
+.tab:hover{background:var(--rice2);color:var(--ink)}
+.tab.active{background:var(--cinnabar);color:#fff;border-color:var(--cinnabar)}
+.nsp{flex:1}
+.nsearch{
+  display:flex;align-items:center;gap:8px;
+  background:#fff;border:1px solid var(--line);border-radius:20px;
+  padding:6px 14px;font-size:13px;
+}
+.nsearch input{border:none;outline:none;background:none;font-family:inherit;
+  font-size:13px;color:var(--ink);width:140px}
+.nsearch input::placeholder{color:var(--stone)}
+
+/* ===== MAIN ===== */
+main{max-width:1100px;margin:0 auto;padding:30px 24px 80px}
+.view{display:none;animation:fadein .35s ease}
+.view.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ===== FILTERS ===== */
+.filters{
+  display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;align-items:center;
+  padding:16px 20px;background:#fff;border-radius:12px;border:1px solid var(--line);
+  box-shadow:var(--shadow);
+}
+.fl{font-size:12px;color:var(--stone);letter-spacing:.08em;font-weight:500}
+.fchips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{
+  font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid var(--line);
+  background:var(--rice2);cursor:pointer;transition:.15s;color:var(--ink);font-weight:500;
+}
+.chip:hover,.chip.on{background:var(--cinnabar);color:#fff;border-color:var(--cinnabar)}
+.chip.batch.on{background:var(--bronze);border-color:var(--bronze)}
+
+/* ===== GRID ===== */
+.count{font-size:13px;color:var(--stone);margin-bottom:16px;letter-spacing:.02em}
+.count strong{color:var(--cinnabar);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  box-shadow:var(--shadow);transition:.22s;cursor:pointer;
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(26,18,11,.14)}
+.cimg{
+  width:100%;aspect-ratio:4/3;object-fit:cover;
+  background:linear-gradient(135deg,#ede8df,#d5cec3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;color:rgba(139,105,20,.3);position:relative;overflow:hidden;
+}
+.cimg img{width:100%;height:100%;object-fit:cover;display:block}
+.cimg .overlay{
+  position:absolute;inset:0;background:linear-gradient(0deg,rgba(26,18,11,.55),transparent 55%);
+}
+.cbadge{
+  position:absolute;top:10px;left:10px;
+  background:var(--cinnabar);color:#fff;font-size:10px;font-weight:700;
+  padding:3px 8px;border-radius:4px;letter-spacing:.06em;
+}
+.cbody{padding:14px 16px 16px}
+.cname{font-family:'Songti SC','STSong','SimSun','宋体',Georgia,serif;font-weight:700;font-size:17px;line-height:1.3;margin-bottom:8px}
+.cmeta{display:flex;flex-direction:column;gap:5px}
+.crow{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--stone)}
+.crow .ic{font-size:13px;width:16px;text-align:center}
+.crow .val{color:var(--ink);font-weight:500}
+.ctags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}
+.ctag{
+  font-size:11px;padding:3px 9px;border-radius:12px;
+  background:var(--rice2);color:var(--bronze);font-weight:500;border:1px solid rgba(139,105,20,.15);
+}
+
+/* ===== LIGHTBOX ===== */
+.lb{
+  position:fixed;inset:0;z-index:100;background:rgba(20,12,5,.88);
+  display:none;align-items:center;justify-content:center;padding:20px;
+  backdrop-filter:blur(4px);
+}
+.lb.open{display:flex}
+.lbinner{
+  background:var(--rice);border-radius:18px;overflow:hidden;
+  max-width:880px;width:100%;max-height:90vh;display:flex;flex-direction:column;
+  box-shadow:0 30px 80px rgba(0,0,0,.4);animation:popup .25s ease;
+}
+@keyframes popup{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
+.lbimg{
+  width:100%;max-height:420px;object-fit:cover;
+  background:linear-gradient(135deg,#ede8df,#d5cec3);
+  display:flex;align-items:center;justify-content:center;font-size:60px;
+}
+.lbimg img{width:100%;max-height:420px;object-fit:cover;display:block}
+.lbbody{padding:24px 28px 28px;overflow-y:auto}
+.lbname{font-family:'Songti SC','STSong','SimSun','宋体',Georgia,serif;font-weight:900;font-size:26px;margin-bottom:6px}
+.lbsub{font-size:13px;color:var(--stone);margin-bottom:18px;line-height:1.7}
+.lbgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.lbfield{background:var(--rice2);border-radius:8px;padding:10px 14px}
+.lbfield .lbl{font-size:11px;color:var(--stone);letter-spacing:.08em;margin-bottom:3px}
+.lbfield .val{font-size:14px;font-weight:600;color:var(--ink)}
+.lbdesc{font-size:13.5px;line-height:1.9;color:rgba(26,18,11,.8);
+  border-top:1px solid var(--line);padding-top:16px}
+.lbclose{
+  position:absolute;top:18px;right:18px;width:36px;height:36px;
+  background:rgba(26,18,11,.5);border:none;border-radius:50%;color:#fff;
+  font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:.15s;z-index:101;
+}
+.lbclose:hover{background:var(--cinnabar)}
+
+/* ===== MAP VIEW ===== */
+#mapframe{width:100%;height:600px;border-radius:14px;border:1px solid var(--line);
+  background:var(--rice2);display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:var(--stone);flex-direction:column;gap:12px;overflow:hidden}
+#mapframe iframe{width:100%;height:100%;border:none;border-radius:14px}
+.maplist{margin-top:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.mapitem{
+  background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;
+  display:flex;align-items:center;gap:12px;cursor:pointer;transition:.15s;
+}
+.mapitem:hover{background:var(--rice2)}
+.mappin{width:32px;height:32px;border-radius:50%;background:var(--cinnabar);
+  color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.mapitem .mn{font-weight:600;font-size:13px}
+.mapitem .ml{font-size:11px;color:var(--stone);margin-top:2px}
+
+/* ===== ABOUT ===== */
+.about{max-width:680px}
+.about h2{font-family:'Songti SC','STSong','SimSun','宋体',Georgia,serif;font-weight:700;font-size:22px;margin-bottom:12px}
+.about p{font-size:14px;line-height:2;color:rgba(26,18,11,.78);margin-bottom:16px}
+.about .hl{color:var(--cinnabar);font-weight:600}
+.tips{background:#fff;border-radius:12px;padding:20px 24px;border:1px solid var(--line);
+  margin-top:24px;box-shadow:var(--shadow)}
+.tips h3{font-family:'Songti SC','STSong','SimSun','宋体',Georgia,serif;font-size:15px;font-weight:700;margin-bottom:12px;
+  display:flex;gap:8px;align-items:center}
+.tiprow{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:13px;line-height:1.8}
+.tiprow .tic{color:var(--bronze-light);font-size:16px;flex-shrink:0;margin-top:1px}
+
+footer{text-align:center;padding:24px;font-size:12px;color:var(--stone);border-top:1px solid var(--line)}
+
+@media(max-width:600px){
+  header{padding:36px 18px 30px}
+  main{padding:20px 16px 60px}
+  .lbgrid{grid-template-columns:1fr}
+  .lbimg img,.lbimg{max-height:260px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hinner">
+    <div class="htop">
+      <div class="hicon">🏛️</div>
+      <div class="htitle">
+        <h1>国保<em>寻踪</em></h1>
+        <div class="sub">全国重点文物保护单位 · 田野影像记录<br>个人走访档案 · 持续更新中</div>
+      </div>
+    </div>
+    <div class="hstats">
+      <div class="hstat"><div class="n" id="totalCount">4</div><div class="l">已记录国保</div></div>
+      <div class="hdivider"></div>
+      <div class="hstat"><div class="n">1</div><div class="l">涉及省份</div></div>
+      <div class="hdivider"></div>
+      <div class="hstat"><div class="n">1</div><div class="l">批次跨度</div></div>
+      <div class="hdivider"></div>
+      <div class="hstat"><div class="n" id="typeCount">1</div><div class="l">文物类型</div></div>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="navin">
+    <button class="tab active" data-v="gallery">📷 图录</button>
+    <button class="tab" data-v="map">🗺️ 地图</button>
+    <button class="tab" data-v="about">📖 关于</button>
+    <span class="nsp"></span>
+    <div class="nsearch">🔍 <input type="text" id="searchInput" placeholder="搜索名称、地点…"></div>
+  </div>
+</nav>
+
+<button class="lbclose" id="lbClose">✕</button>
+<div class="lb" id="lightbox">
+  <div class="lbinner" id="lbInner">
+    <div class="lbimg" id="lbImg"></div>
+    <div class="lbbody">
+      <div class="lbname" id="lbName"></div>
+      <div class="lbsub" id="lbSub"></div>
+      <div class="lbgrid">
+        <div class="lbfield"><div class="lbl">所在省份</div><div class="val" id="lbProv"></div></div>
+        <div class="lbfield"><div class="lbl">所在城市</div><div class="val" id="lbCity"></div></div>
+        <div class="lbfield"><div class="lbl">公布批次</div><div class="val" id="lbBatch"></div></div>
+        <div class="lbfield"><div class="lbl">文物类型</div><div class="val" id="lbType"></div></div>
+        <div class="lbfield"><div class="lbl">公布时间</div><div class="val" id="lbDate"></div></div>
+        <div class="lbfield"><div class="lbl">走访时间</div><div class="val" id="lbVisit"></div></div>
+      </div>
+      <div class="lbdesc" id="lbDesc"></div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <!-- GALLERY -->
+  <section class="view active" id="view-gallery">
+    <div class="filters">
+      <span class="fl">省份</span>
+      <div class="fchips" id="provChips"></div>
+      <span class="fl" style="margin-left:8px">批次</span>
+      <div class="fchips" id="batchChips"></div>
+      <span class="fl" style="margin-left:8px">类型</span>
+      <div class="fchips" id="typeChips"></div>
+    </div>
+    <div class="count" id="countLine"></div>
+    <div class="grid" id="cardGrid"></div>
+  </section>
+
+  <!-- MAP -->
+  <section class="view" id="view-map">
+    <div id="mapframe">
+      <div style="text-align:center;padding:40px 20px">
+        <div style="font-size:40px;margin-bottom:12px">🗺️</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:6px">地图功能</div>
+        <div style="font-size:13px;color:#9ca3af;line-height:1.8">
+          完整版将集成高德地图 / OpenStreetMap<br>
+          每个国保单位在地图上标点，点击查看照片和信息
+        </div>
+      </div>
+    </div>
+    <div class="maplist" id="mapList"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="view" id="view-about">
+    <div class="about">
+      <h2>关于这份记录</h2>
+      <p>
+        全国重点文物保护单位，简称"<span class="hl">国保</span>"，是中国文物保护的最高级别。
+        自1961年第一批公布以来，截至目前已公布八批，共计<span class="hl">5058处</span>。
+      </p>
+      <p>
+        这个网站记录的是我个人走访国保单位时拍摄的<span class="hl">国保碑</span>影像。
+        国保碑是每处文物保护单位必须设立的标志碑，记录着名称、批次和公布机关，
+        是这处文物"身份证"的最直观体现。
+      </p>
+      <p>
+        目前已收录 <span class="hl" id="aboutCount">4</span> 处，主要集中在山西省，
+        以第一批古建筑类国保为主。后续将持续补充。
+      </p>
+      <div class="tips">
+        <h3>📌 使用说明</h3>
+        <div class="tiprow"><span class="tic">①</span><span>点击任意卡片可查看国保碑原图和详细信息</span></div>
+        <div class="tiprow"><span class="tic">②</span><span>顶部筛选栏可按省份、批次、类型过滤</span></div>
+        <div class="tiprow"><span class="tic">③</span><span>右上角搜索框支持名称和地点关键词检索</span></div>
+        <div class="tiprow"><span class="tic">④</span><span>地图页面可查看所有已记录国保的地理分布</span></div>
+      </div>
+
+      <div class="tips" style="margin-top:16px">
+        <h3>📋 批次说明</h3>
+        <div class="tiprow"><span class="tic">一</span><span><strong>第一批（1961）</strong> — 180处，涵盖最重要的史前遗址、古建筑、石窟等</span></div>
+        <div class="tiprow"><span class="tic">二</span><span><strong>第二批（1982）</strong> — 62处</span></div>
+        <div class="tiprow"><span class="tic">三</span><span><strong>第三批（1988）</strong> — 258处</span></div>
+        <div class="tiprow"><span class="tic">四</span><span><strong>第四批（1996）</strong> — 250处</span></div>
+        <div class="tiprow"><span class="tic">五</span><span><strong>第五批（2001）</strong> — 518处</span></div>
+        <div class="tiprow"><span class="tic">六</span><span><strong>第六批（2006）</strong> — 1080处</span></div>
+        <div class="tiprow"><span class="tic">七</span><span><strong>第七批（2013）</strong> — 1943处</span></div>
+        <div class="tiprow"><span class="tic">八</span><span><strong>第八批（2019）</strong> — 762处</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>国保寻踪 · 个人田野影像档案 · 数据持续更新中</footer>
+
+<script>
+/* ===== DATA ===== */
+// img: 上传图片后替换为真实 URL；暂用 placeholder
+const DATA = [
+  {
+    id: 1,
+    name: "佛宫寺释迦塔",
+    aka: "应县木塔",
+    province: "山西",
+    city: "朔州·应县",
+    batch: "第一批",
+    batchYear: 1961,
+    type: "古建筑",
+    subtype: "木塔",
+    announced: "1961年3月4日",
+    visited: "待补充",
+    lat: 39.5667, lng: 113.1833,
+    img: "", // 替换为: "图片URL"
+    desc: "佛宫寺释迦塔，俗称应县木塔，位于山西省朔州市应县城内。建于辽清宁二年（1056年），金明昌六年（1195年）增修完毕，是中国现存最高、最古老的木构塔式建筑，世界现存最高的木塔，与意大利比萨斜塔、巴黎埃菲尔铁塔并称"世界三大奇塔"。塔高67.31米，底层直径30.27米，为纯木结构、八角形楼阁式。"
+  },
+  {
+    id: 2,
+    name: "佛光寺",
+    aka: "唐代木构瑰宝",
+    province: "山西",
+    city: "忻州·五台",
+    batch: "第一批",
+    batchYear: 1961,
+    type: "古建筑",
+    subtype: "寺庙",
+    announced: "1961年3月4日",
+    visited: "待补充",
+    lat: 38.9167, lng: 113.3500,
+    img: "",
+    desc: "佛光寺位于山西省忻州市五台县豆村镇东北，距五台县城30公里。1937年，梁思成、林徽因夫妇发现此寺，证实其东大殿为唐代木构建筑，是当时中国已发现最古老的木结构建筑（建于唐大中十一年，857年），打破了日本学者"中国国内无唐代木构建筑"的论断，震动了国际学界。寺内保存有唐代塑像、壁画、题记、石幢等珍贵文物。"
+  },
+  {
+    id: 3,
+    name: "南禅寺",
+    aka: "现存最古唐代木构",
+    province: "山西",
+    city: "忻州·五台",
+    batch: "第一批",
+    batchYear: 1961,
+    type: "古建筑",
+    subtype: "寺庙",
+    announced: "1961年3月4日",
+    visited: "待补充",
+    lat: 38.8500, lng: 113.2833,
+    img: "",
+    desc: "南禅寺位于山西省忻州市五台县阳白乡李家庄西侧，大殿重建于唐建中三年（782年），是中国现存最古老的木结构建筑，比佛光寺东大殿还早75年。1953年文物普查时被发现。大殿面宽三间，进深三间，单檐歇山顶，殿内保存有唐代彩塑十七尊，为研究唐代建筑和雕塑的珍贵实物资料。"
+  },
+  {
+    id: 4,
+    name: "永乐宫",
+    aka: "元代道教壁画圣地",
+    province: "山西",
+    city: "运城·芮城",
+    batch: "第一批",
+    batchYear: 1961,
+    type: "古建筑",
+    subtype: "道观",
+    announced: "1961年3月4日",
+    visited: "待补充",
+    lat: 34.6833, lng: 110.6833,
+    img: "",
+    desc: "永乐宫，全称大纯阳万寿宫，位于山西省运城市芮城县城北3公里处。原址在芮城县永乐镇，因修建三门峡水库，于1959—1964年整体迁移至现址，是中国文物保护史上规模最大的古建筑搬迁工程之一。宫内保存有元代壁画1005.68平方米，题材涵盖道教神话故事，笔法精湛，色彩富丽，是中国古代壁画艺术的巅峰之作。"
+  }
+];
+
+/* ===== STATE ===== */
+let activeProvs = new Set();
+let activeBatches = new Set();
+let activeTypes = new Set();
+let searchQ = "";
+
+/* ===== INIT FILTERS ===== */
+function unique(key){ return [...new Set(DATA.map(d=>d[key]))].sort(); }
+function buildChips(containerId, values, activeSet, cls){
+  const c = document.getElementById(containerId);
+  values.forEach(v=>{
+    const ch = document.createElement("button");
+    ch.className = "chip" + (cls?" "+cls:"");
+    ch.textContent = v;
+    ch.onclick = ()=>{
+      if(activeSet.has(v)) activeSet.delete(v);
+      else activeSet.add(v);
+      ch.classList.toggle("on", activeSet.has(v));
+      renderGrid();
+    };
+    c.appendChild(ch);
+  });
+}
+buildChips("provChips", unique("province"), activeProvs, "");
+buildChips("batchChips", unique("batch"), activeBatches, "batch");
+buildChips("typeChips", unique("type"), activeTypes, "");
+
+/* ===== FILTER LOGIC ===== */
+function filtered(){
+  return DATA.filter(d=>{
+    if(activeProvs.size && !activeProvs.has(d.province)) return false;
+    if(activeBatches.size && !activeBatches.has(d.batch)) return false;
+    if(activeTypes.size && !activeTypes.has(d.type)) return false;
+    if(searchQ){
+      const q = searchQ.toLowerCase();
+      if(!d.name.includes(q) && !d.city.includes(q) && !(d.aka||"").includes(q) && !d.province.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+/* ===== RENDER GRID ===== */
+function renderGrid(){
+  const items = filtered();
+  const grid = document.getElementById("cardGrid");
+  document.getElementById("countLine").innerHTML = `共收录 <strong>${items.length}</strong> 处国保单位`;
+  grid.innerHTML = "";
+  if(!items.length){
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--stone)">
+      <div style="font-size:40px;margin-bottom:12px">🔍</div>
+      <p>没有符合条件的记录</p></div>`;
+    return;
+  }
+  items.forEach(d=>{
+    const card = document.createElement("div");
+    card.className = "card";
+    const imgHtml = d.img
+      ? `<img src="${d.img}" alt="${d.name}国保碑" loading="lazy">`
+      : `<div style="display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(139,105,20,.4)">
+           <span style="font-size:42px">🏛️</span>
+           <span style="font-size:11px;letter-spacing:.06em">照片待上传</span>
+         </div>`;
+    card.innerHTML = `
+      <div class="cimg">
+        ${imgHtml}
+        <div class="overlay"></div>
+        <div class="cbadge">${d.batch}</div>
+      </div>
+      <div class="cbody">
+        <div class="cname">${d.name}</div>
+        <div class="cmeta">
+          <div class="crow"><span class="ic">📍</span><span class="val">${d.province} · ${d.city}</span></div>
+          <div class="crow"><span class="ic">🏷️</span><span class="val">${d.type} · ${d.subtype}</span></div>
+          <div class="crow"><span class="ic">📅</span><span class="val">${d.announced}</span></div>
+        </div>
+        <div class="ctags">
+          <span class="ctag">${d.province}</span>
+          <span class="ctag">${d.batch}</span>
+          <span class="ctag">${d.subtype}</span>
+        </div>
+      </div>`;
+    card.onclick = ()=> openLb(d);
+    grid.appendChild(card);
+  });
+}
+
+/* ===== LIGHTBOX ===== */
+function openLb(d){
+  const lb = document.getElementById("lightbox");
+  const imgEl = document.getElementById("lbImg");
+  imgEl.innerHTML = d.img
+    ? `<img src="${d.img}" alt="${d.name}">`
+    : `<div style="width:100%;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#ede8df,#d5cec3);gap:10px;color:rgba(139,105,20,.4)"><span style="font-size:60px">🏛️</span><span style="font-size:12px;letter-spacing:.08em">照片待上传</span></div>`;
+  document.getElementById("lbName").textContent = d.name;
+  document.getElementById("lbSub").textContent = d.aka || "";
+  document.getElementById("lbProv").textContent = d.province;
+  document.getElementById("lbCity").textContent = d.city;
+  document.getElementById("lbBatch").textContent = d.batch + "（" + d.batchYear + "年）";
+  document.getElementById("lbType").textContent = d.type + " · " + d.subtype;
+  document.getElementById("lbDate").textContent = d.announced;
+  document.getElementById("lbVisit").textContent = d.visited;
+  document.getElementById("lbDesc").textContent = d.desc;
+  lb.classList.add("open");
+  document.body.style.overflow = "hidden";
+  // move close button inside lb
+  lb.appendChild(document.getElementById("lbClose"));
+}
+function closeLb(){
+  document.getElementById("lightbox").classList.remove("open");
+  document.body.style.overflow = "";
+}
+document.getElementById("lbClose").onclick = closeLb;
+document.getElementById("lightbox").onclick = e => { if(e.target===document.getElementById("lightbox")) closeLb(); };
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeLb(); });
+
+/* ===== MAP LIST ===== */
+function renderMapList(){
+  const ml = document.getElementById("mapList");
+  ml.innerHTML = "";
+  DATA.forEach((d,i)=>{
+    const item = document.createElement("div");
+    item.className = "mapitem";
+    item.innerHTML = `<div class="mappin">${i+1}</div>
+      <div><div class="mn">${d.name}</div><div class="ml">${d.province} · ${d.city} · ${d.batch}</div></div>`;
+    item.onclick = ()=>{ switchView("gallery"); setTimeout(()=>openLb(d),200); };
+    ml.appendChild(item);
+  });
+}
+
+/* ===== SEARCH ===== */
+document.getElementById("searchInput").oninput = e=>{
+  searchQ = e.target.value.trim();
+  renderGrid();
+};
+
+/* ===== NAV ===== */
+function switchView(v){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.v===v));
+  document.querySelectorAll(".view").forEach(s=>s.classList.remove("active"));
+  document.getElementById("view-"+v).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>switchView(t.dataset.v));
+
+/* ===== STATS ===== */
+document.getElementById("totalCount").textContent = DATA.length;
+document.getElementById("typeCount").textContent = unique("type").length;
+document.getElementById("aboutCount").textContent = DATA.length;
+
+/* ===== GO ===== */
+renderGrid();
+renderMapList();
+</script>
+</body>
+</html>
