@@ -34,8 +34,7 @@ main{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
 .card{background:#fff;border:1px solid rgba(26,18,11,.1);border-radius:12px;
   overflow:hidden;cursor:pointer;transition:.2s;box-shadow:0 4px 16px rgba(26,18,11,.08)}
 .card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(26,18,11,.13)}
-.cimg{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;
-  background:linear-gradient(135deg,#ede8df,#d5cec3)}
+.cimg{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#ede8df}
 .cimg-ph{width:100%;aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;
   justify-content:center;background:linear-gradient(135deg,#ede8df,#d5cec3);
   color:rgba(139,105,20,.35);gap:6px}
@@ -45,8 +44,6 @@ main{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
   padding:2px 7px;border-radius:3px;margin:12px 14px 4px;letter-spacing:.06em}
 .cname{font-size:16px;font-weight:700;padding:0 14px 8px;line-height:1.3}
 .cmeta{padding:0 14px 14px;font-size:12px;color:#6b7280;display:flex;flex-direction:column;gap:4px}
-.crow{display:flex;gap:5px}
-/* lightbox */
 .lb{position:fixed;inset:0;background:rgba(10,6,2,.88);z-index:100;
   display:none;align-items:center;justify-content:center;padding:16px}
 .lb.open{display:flex}
@@ -54,7 +51,7 @@ main{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
   max-width:820px;width:100%;max-height:92vh;display:flex;flex-direction:column;
   box-shadow:0 24px 60px rgba(0,0,0,.4);position:relative}
 .lbox img{width:100%;max-height:380px;object-fit:cover;display:block}
-.lbox-ph{width:100%;height:260px;display:flex;align-items:center;justify-content:center;
+.lbox-ph{width:100%;height:220px;display:flex;align-items:center;justify-content:center;
   background:linear-gradient(135deg,#ede8df,#d5cec3);font-size:56px;color:rgba(139,105,20,.3)}
 .lbody{padding:20px 24px 24px;overflow-y:auto}
 .lbody h2{font-size:22px;font-weight:800;margin-bottom:4px}
@@ -67,8 +64,7 @@ main{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
   border-top:1px solid rgba(26,18,11,.1);padding-top:14px}
 .lclose{position:absolute;top:12px;right:12px;width:34px;height:34px;
   background:rgba(20,12,5,.6);border:none;border-radius:50%;color:#fff;
-  font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-/* about */
+  font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:1}
 .about{max-width:640px}
 .about h2{font-size:20px;font-weight:700;margin-bottom:10px}
 .about p{font-size:14px;line-height:2;color:rgba(26,18,11,.75);margin-bottom:14px}
@@ -77,7 +73,7 @@ main{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
   border:1px solid rgba(26,18,11,.1);margin-top:20px}
 .box h3{font-size:14px;font-weight:700;margin-bottom:10px}
 .brow{display:flex;gap:10px;font-size:13px;line-height:1.8;margin-bottom:6px}
-.brow .bi{color:#c9a84c;font-weight:700;flex-shrink:0}
+.brow .bi{color:#c9a84c;font-weight:700;flex-shrink:0;min-width:32px}
 footer{text-align:center;padding:20px;font-size:12px;color:#9ca3af;
   border-top:1px solid rgba(26,18,11,.08)}
 @media(max-width:600px){
@@ -88,23 +84,20 @@ footer{text-align:center;padding:20px;font-size:12px;color:#9ca3af;
 </style>
 </head>
 <body>
-
 <header>
   <h1>国保<span>寻踪</span></h1>
   <p>全国重点文物保护单位 · 田野影像记录 · 个人走访档案</p>
   <div class="stats">
-    <div class="stat"><div class="n" id="sc">4</div><div class="l">已记录国保</div></div>
-    <div class="stat"><div class="n">1</div><div class="l">涉及省份</div></div>
-    <div class="stat"><div class="n">1</div><div class="l">公布批次</div></div>
-    <div class="stat"><div class="n">1</div><div class="l">文物类型</div></div>
+    <div class="stat"><div class="n" id="sc">32</div><div class="l">已记录国保</div></div>
+    <div class="stat"><div class="n" id="pc">-</div><div class="l">涉及省份</div></div>
+    <div class="stat"><div class="n" id="bc">-</div><div class="l">公布批次</div></div>
+    <div class="stat"><div class="n" id="tc">-</div><div class="l">文物类型</div></div>
   </div>
 </header>
-
 <nav>
   <button class="tab on" data-v="gallery">图录</button>
   <button class="tab" data-v="about">关于</button>
 </nav>
-
 <div class="lb" id="lb">
   <div class="lbox" id="lbox">
     <button class="lclose" id="lclose">x</button>
@@ -124,27 +117,21 @@ footer{text-align:center;padding:20px;font-size:12px;color:#9ca3af;
     </div>
   </div>
 </div>
-
 <main>
   <section class="view show" id="view-gallery">
     <div class="filters">
-      <span class="fl">省份</span>
-      <div id="pc"></div>
-      <span class="fl" style="margin-left:10px">批次</span>
-      <div id="bc"></div>
-      <span class="fl" style="margin-left:10px">类型</span>
-      <div id="tc"></div>
+      <span class="fl">省份</span><div id="fpc"></div>
+      <span class="fl" style="margin-left:10px">批次</span><div id="fbc"></div>
+      <span class="fl" style="margin-left:10px">类型</span><div id="ftc"></div>
     </div>
     <div class="count" id="ct"></div>
     <div class="grid" id="grid"></div>
   </section>
-
   <section class="view" id="view-about">
     <div class="about">
       <h2>关于这份记录</h2>
       <p>全国重点文物保护单位，简称<b>国保</b>，是中国文物保护的最高级别。自1961年第一批公布以来，截至目前已公布八批，共计<b>5058处</b>。</p>
-      <p>这个网站记录的是我个人走访国保单位时拍摄的<b>国保碑</b>影像。国保碑是每处文物保护单位必须设立的标志碑，记录着名称、批次和公布机关，是这处文物身份证的最直观体现。</p>
-      <p>目前已收录 <b>4处</b>，主要集中在山西省，以第一批古建筑类国保为主，后续将持续补充。</p>
+      <p>这个网站记录的是我个人走访国保单位时拍摄的<b>国保碑</b>影像。国保碑是每处文物保护单位必须设立的标志碑，是这处文物身份证的最直观体现。</p>
       <div class="box">
         <h3>使用说明</h3>
         <div class="brow"><span class="bi">1.</span><span>点击任意卡片查看国保碑原图和详细信息</span></div>
@@ -165,61 +152,55 @@ footer{text-align:center;padding:20px;font-size:12px;color:#9ca3af;
     </div>
   </section>
 </main>
-
 <footer>国保寻踪 · 个人田野影像档案 · 持续更新中</footer>
-
 <script>
 var DATA = [
-  {
-    id:1, name:"佛宫寺释迦塔", aka:"应县木塔",
-    province:"山西", city:"朔州·应县",
-    batch:"第一批", year:1961,
-    type:"古建筑", sub:"木塔",
-    date:"1961年3月4日", visit:"待补充",
-    img:"img/001.jpg",
-    desc:"佛宫寺释迦塔，俗称应县木塔，位于山西省朔州市应县城内。建于辽清宁二年（1056年），是中国现存最高、最古老的木构塔式建筑，塔高67.31米，底层直径30.27米，为纯木结构、八角形楼阁式，与意大利比萨斜塔、巴黎埃菲尔铁塔并称世界三大奇塔。"
-  },
-  {
-    id:2, name:"永乐宫", aka:"元代道教壁画圣地",
-    province:"山西", city:"运城·芮城",
-    batch:"第一批", year:1961,
-    type:"古建筑", sub:"道观",
-    date:"1961年3月4日", visit:"待补充",
-    img:"img/002.jpg",
-    desc:"永乐宫全称大纯阳万寿宫，位于山西省运城市芮城县。因修建三门峡水库，于1959至1964年整体迁移至现址，是中国文物保护史上规模最大的古建筑搬迁工程之一。宫内保存有元代壁画1005.68平方米，是中国古代壁画艺术的巅峰之作。"
-  },
-  {
-    id:3, name:"南禅寺", aka:"现存最古唐代木构",
-    province:"山西", city:"忻州·五台",
-    batch:"第一批", year:1961,
-    type:"古建筑", sub:"寺庙",
-    date:"1961年3月4日", visit:"待补充",
-    img:"img/003.jpg",
-    desc:"南禅寺位于山西省忻州市五台县阳白乡李家庄西侧，大殿重建于唐建中三年（782年），是中国现存最古老的木结构建筑，比佛光寺东大殿还早75年。1953年文物普查时被发现，殿内保存有唐代彩塑十七尊。"
-  },
-  {
-    id:4, name:"佛光寺", aka:"唐代木构瑰宝",
-    province:"山西", city:"忻州·五台",
-    batch:"第一批", year:1961,
-    type:"古建筑", sub:"寺庙",
-    date:"1961年3月4日", visit:"待补充",
-    img:"img/004.jpg",
-    desc:"佛光寺位于山西省忻州市五台县豆村镇东北。1937年梁思成、林徽因夫妇发现此寺，证实其东大殿建于唐大中十一年（857年），是当时中国已发现最古老的木结构建筑，打破了日本学者认为中国国内无唐代木构建筑的论断。"
-  }
+  {id:1,name:"佛宫寺释迦塔",aka:"应县木塔",province:"山西",city:"朔州·应县",batch:"第一批",year:1961,type:"古建筑",sub:"木塔",date:"1961年3月4日",visit:"待补充",img:"img/001.jpg",desc:"佛宫寺释迦塔俗称应县木塔，建于辽清宁二年（1056年），是中国现存最高、最古老的木构塔式建筑，塔高67.31米，为纯木结构八角形楼阁式，与比萨斜塔、埃菲尔铁塔并称世界三大奇塔。"},
+  {id:2,name:"永乐宫",aka:"元代道教壁画圣地",province:"山西",city:"运城·芮城",batch:"第一批",year:1961,type:"古建筑",sub:"道观",date:"1961年3月4日",visit:"待补充",img:"img/002.jpg",desc:"永乐宫全称大纯阳万寿宫，因修建三门峡水库于1959至1964年整体迁移至现址，是中国文物保护史上规模最大的古建筑搬迁工程之一。宫内保存有元代壁画1005.68平方米，是中国古代壁画艺术的巅峰之作。"},
+  {id:3,name:"南禅寺",aka:"现存最古唐代木构",province:"山西",city:"忻州·五台",batch:"第一批",year:1961,type:"古建筑",sub:"寺庙",date:"1961年3月4日",visit:"待补充",img:"img/003.jpg",desc:"南禅寺大殿重建于唐建中三年（782年），是中国现存最古老的木结构建筑，比佛光寺东大殿还早75年。殿内保存有唐代彩塑十七尊。"},
+  {id:4,name:"佛光寺",aka:"唐代木构瑰宝",province:"山西",city:"忻州·五台",batch:"第一批",year:1961,type:"古建筑",sub:"寺庙",date:"1961年3月4日",visit:"待补充",img:"img/004.jpg",desc:"1937年梁思成、林徽因夫妇发现佛光寺，证实其东大殿建于唐大中十一年（857年），打破了日本学者认为中国国内无唐代木构建筑的论断，震动国际学界。"},
+  {id:5,name:"卢沟桥",aka:"宛平城",province:"北京",city:"北京·丰台",batch:"第一批",year:1961,type:"古建筑",sub:"桥梁",date:"1961年3月4日",visit:"待补充",img:"img/005.jpg",desc:"卢沟桥建于金大定二十九年（1189年），是北京现存最古老的石造联拱桥。1937年七七事变在此爆发，是中国全面抗战的起点，具有重要历史意义。桥上共有石狮501个，姿态各异。"},
+  {id:6,name:"广胜寺",aka:"飞虹塔所在地",province:"山西",city:"临汾·洪洞",batch:"第一批",year:1961,type:"古建筑",sub:"寺庙",date:"1961年3月4日",visit:"待补充",img:"img/006.jpg",desc:"广胜寺分上下两寺，上寺飞虹塔建于明正德十年（1515年），是中国现存最完整的琉璃塔，通体以五彩琉璃贴面，色彩斑斓，素有天下第一琉璃塔之称。寺内还保存有元代水神庙壁画。"},
+  {id:7,name:"铁佛寺",aka:"",province:"山西",city:"临汾市区",batch:"第六批",year:2006,type:"古建筑",sub:"寺庙",date:"2006年5月25日",visit:"待补充",img:"img/007.jpg",desc:"铁佛寺位于山西省临汾市，是第六批全国重点文物保护单位，以寺内供奉铁铸佛像而得名，现存建筑保留有清代建筑风格。"},
+  {id:8,name:"千佛庵",aka:"",province:"山西",city:"临汾·隰县",batch:"第四批",year:1996,type:"古建筑",sub:"寺庙",date:"1996年11月20日",visit:"待补充",img:"img/008.jpg",desc:"千佛庵位于山西省隰县城西北约1公里的凤凰山腰，建于明崇祯二年（1629年），庵内小西天大雄宝殿内悬塑造像被誉为中国古代悬塑艺术的精华，素有东方彩塑艺术宫殿之称。"},
+  {id:9,name:"柏山寺塔",aka:"",province:"陕西",city:"延安·宜川",batch:"第六批",year:2006,type:"古建筑",sub:"塔",date:"2006年5月25日",visit:"待补充",img:"img/009.jpg",desc:"柏山寺塔位于陕西省延安市宜川县，是第六批全国重点文物保护单位，为砖石结构古塔，具有较高的历史和建筑艺术价值。"},
+  {id:10,name:"韩城城隍庙",aka:"",province:"陕西",city:"渭南·韩城",batch:"第五批",year:2001,type:"古建筑",sub:"庙宇",date:"2001年6月25日",visit:"待补充",img:"img/010.jpg",desc:"韩城城隍庙始建于明隆庆五年（1571年），坐北朝南，平面分四道院呈十字形，以山门、戏台、正殿等构成中轴线。庙中建筑构架保留了明代初期建筑特征，庙前有琉璃九龙壁，是陕西保存较完整的城隍庙之一。"},
+  {id:11,name:"解州关帝庙",aka:"关帝祖庙",province:"山西",city:"运城·盐湖",batch:"第一批",year:1961,type:"古建筑",sub:"庙宇",date:"1961年3月4日",visit:"待补充",img:"img/011.jpg",desc:"解州关帝庙位于山西省运城市盐湖区解州镇，是全国规模最大的关帝庙，被誉为武庙之祖。现存建筑多为清代重建，总面积22万平方米，主要建筑有端门、午门、御书楼、崇宁殿等，气势宏伟。"},
+  {id:12,name:"昭陵",aka:"唐太宗李世民陵",province:"陕西",city:"咸阳·礼泉",batch:"第一批",year:1961,type:"古墓葬",sub:"帝陵",date:"1961年3月4日",visit:"待补充",img:"img/012.jpg",desc:"昭陵是唐太宗李世民与文德皇后长孙氏的合葬陵寝，位于陕西省礼泉县九嵕山主峰。陵园周长60公里，陪葬墓近200座，规模宏大。昭陵六骏浮雕是中国古代石刻艺术的杰作，现部分收藏于西安碑林博物馆。"},
+  {id:13,name:"天宁寺凌霄塔",aka:"",province:"河北",city:"石家庄·正定",batch:"第三批",year:1988,type:"古建筑",sub:"塔",date:"1988年1月13日",visit:"待补充",img:"img/013.jpg",desc:"天宁寺凌霄塔位于河北省正定县，又称木塔，建于唐代，历经多次修缮。塔高41米，为砖木混合结构，内有木质楼梯可登顶，是正定古城四大名塔之一，具有重要的建筑史研究价值。"},
+  {id:14,name:"正定文庙大成殿",aka:"",province:"河北",city:"石家庄·正定",batch:"第四批",year:1996,type:"古建筑",sub:"文庙",date:"1996年11月20日",visit:"待补充",img:"img/014.jpg",desc:"正定文庙大成殿建造年代经考证为晚唐至五代时期，是华北地区现存最古老的木结构建筑之一。面阔五间，采用叉手、蜀柱等早期构件，斗拱硕大，手法古朴，具有极高的建筑史研究价值。"},
+  {id:15,name:"开元寺钟楼",aka:"开元寺旧碑·子项",province:"河北",city:"石家庄·正定",batch:"第三批",year:1988,type:"古建筑",sub:"钟楼",date:"1988年1月13日",visit:"待补充",img:"img/015.jpg",desc:"此为开元寺早期分立的国保碑，记录钟楼子项。正定开元寺钟楼是国内现存为数不多的唐代砖木结构建筑之一，后与须弥塔合并统一列入开元寺条目管理。现碑为旧碑，具有国保碑演变的文献价值。"},
+  {id:16,name:"开元寺钟楼、塔",aka:"河北省保旧碑",province:"河北",city:"石家庄·正定",batch:"第三批",year:1988,type:"古建筑",sub:"省保旧碑",date:"1988年1月13日",visit:"待补充",img:"img/016.jpg",desc:"此碑为早期河北省保碑，记录开元寺钟楼与塔为合并条目。后升级为全国重点文物保护单位，统一以开元寺命名。此旧碑记录了文物保护单位从省保升格为国保的历史过程，是国保碑演变的珍贵实物见证。"},
+  {id:17,name:"开元寺",aka:"",province:"河北",city:"石家庄·正定",batch:"第三批",year:1988,type:"古建筑",sub:"寺庙",date:"1988年1月13日",visit:"待补充",img:"img/017.jpg",desc:"正定开元寺是正定历史文化名城的重要组成部分，寺内现存唐代钟楼和须弥塔，是研究唐代建筑的珍贵实物。寺院始建于东魏，历经各代修缮，见证了正定作为历史文化名城的深厚积淀。"},
+  {id:18,name:"圆明园遗址",aka:"",province:"北京",city:"北京·海淀",batch:"第一批",year:1961,type:"近现代史迹",sub:"遗址",date:"1961年3月4日",visit:"待补充",img:"img/018.jpg",desc:"圆明园始建于清康熙四十六年（1707年），是清代著名的皇家园林，被誉为万园之园。1860年第二次鸦片战争中遭英法联军焚毁，现存遗址是中国近代史的重要见证，残存的西洋楼遗址已成为历史的标志性符号。"},
+  {id:19,name:"故宫",aka:"紫禁城",province:"北京",city:"北京·东城",batch:"第一批",year:1961,type:"古建筑",sub:"宫殿",date:"1961年3月4日",visit:"待补充",img:"img/019.jpg",desc:"故宫又称紫禁城，建成于明永乐十八年（1420年），是中国明清两代的皇家宫殿，世界上现存规模最大、保存最为完整的木质结构古建筑群。1987年被列入世界文化遗产名录，现为故宫博物院。"},
+  {id:20,name:"景山",aka:"",province:"北京",city:"北京·西城",batch:"第一批",year:1961,type:"古建筑",sub:"皇家园林",date:"1961年3月4日",visit:"待补充",img:"img/020.jpg",desc:"景山位于故宫北侧，是明清两代的皇家御苑，山顶万春亭是北京中轴线上的制高点。明崇祯帝于1644年在此自缢，是重要历史事件发生地。现为景山公园，每年牡丹花会享誉全国。"},
+  {id:21,name:"颐和园",aka:"",province:"北京",city:"北京·海淀",batch:"第一批",year:1961,type:"古建筑",sub:"皇家园林",date:"1961年3月4日",visit:"待补充",img:"img/021.jpg",desc:"颐和园是中国现存规模最大、保存最完整的皇家园林，建于清乾隆十五年（1750年），以昆明湖、万寿山为基址，汲取江南园林设计手法，是中国园林艺术的杰作。1998年被列入世界文化遗产名录。"},
+  {id:22,name:"古观象台",aka:"",province:"北京",city:"北京·东城",batch:"第一批",year:1961,type:"古建筑",sub:"科技史迹",date:"1961年3月4日",visit:"待补充",img:"img/022.jpg",desc:"古观象台建于明正统七年（1442年），是明清两代皇家天文观测机构，台上陈列有清制八件铜铸天文仪器，是中西方天文学交流的历史见证。现为北京古观象台博物馆。"},
+  {id:23,name:"妙应寺白塔",aka:"",province:"北京",city:"北京·西城",batch:"第一批",year:1961,type:"古建筑",sub:"塔",date:"1961年3月4日",visit:"待补充",img:"img/023.jpg",desc:"妙应寺白塔建于元至元八年（1271年），由尼泊尔工匠阿尼哥主持修建，是中国现存年代最早、规模最大的藏式喇嘛塔，塔高50.9米，通体洁白，是北京的标志性建筑之一。"},
+  {id:24,name:"西什库教堂",aka:"北堂",province:"北京",city:"北京·西城",batch:"第一批",year:1961,type:"近现代史迹",sub:"教堂",date:"1961年3月4日",visit:"待补充",img:"img/024.jpg",desc:"西什库教堂又称北堂，现存建筑建于清光绪十四年（1888年），是北京最大的天主教堂，哥特式建筑风格，建筑面积2200平方米，可容纳数百人，是中西文化交流的重要历史见证。"},
+  {id:25,name:"原起寺",aka:"",province:"山西",city:"长治·潞城",batch:"第六批",year:2006,type:"古建筑",sub:"寺庙",date:"2006年5月25日",visit:"待补充",img:"img/025.jpg",desc:"原起寺位于山西省长治市潞城区，是第六批全国重点文物保护单位，寺内现存古代建筑保留了较为完整的历史风貌，是长治地区重要的古建筑遗存。"},
+  {id:26,name:"天台庵",aka:"",province:"山西",city:"长治·平顺",batch:"第三批",year:1988,type:"古建筑",sub:"寺庙",date:"1988年1月13日",visit:"待补充",img:"img/026.jpg",desc:"天台庵位于山西省平顺县王曲村，建于唐末，是中国现存四座唐代木构建筑之一，大殿面宽三间，单檐歇山顶，建筑风格简洁古朴，是研究唐代建筑艺术的珍贵实物。"},
+  {id:27,name:"大云院",aka:"",province:"山西",city:"长治·平顺",batch:"第三批",year:1988,type:"古建筑",sub:"寺庙",date:"1988年1月13日",visit:"待补充",img:"img/027.jpg",desc:"大云院位于山西省平顺县实会村，建于五代后晋天福三年（938年），大佛殿为五代建筑，殿内保存有五代时期壁画，是研究五代建筑和壁画艺术的重要实物，极为珍贵。"},
+  {id:28,name:"佛头寺",aka:"",province:"山西",city:"长治市区",batch:"第六批",year:2006,type:"古建筑",sub:"寺庙",date:"2006年5月25日",visit:"待补充",img:"img/028.jpg",desc:"佛头寺位于山西省长治市，是第六批全国重点文物保护单位，现存古建筑保留了一定的历史价值，是长治市区内重要的古代建筑遗存。"},
+  {id:29,name:"淳化寺",aka:"",province:"山西",city:"长治·长治县",batch:"第五批",year:2001,type:"古建筑",sub:"寺庙",date:"2001年6月25日",visit:"待补充",img:"img/029.jpg",desc:"淳化寺位于山西省长治市长治县，是第五批全国重点文物保护单位，现存建筑具有较高的历史和艺术价值，是长治地区古代建筑文化的重要组成部分。"},
+  {id:30,name:"龙门寺",aka:"",province:"山西",city:"长治·平顺",batch:"第四批",year:1996,type:"古建筑",sub:"寺庙",date:"1996年11月20日",visit:"待补充",img:"img/030.jpg",desc:"龙门寺位于山西省平顺县石城镇源头村，始建于北齐天保年间，现存建筑有五代、宋、金、元、明、清各代遗构，是一处集多个历史时期建筑于一体的古建筑群，极为珍贵。"},
+  {id:31,name:"晋祠",aka:"",province:"山西",city:"太原·晋源",batch:"第一批",year:1961,type:"古建筑",sub:"祠庙",date:"1961年3月4日",visit:"待补充",img:"img/031.jpg",desc:"晋祠位于太原市晋源区，是为纪念晋国开国诸侯唐叔虞而建，现存建筑中圣母殿建于北宋天圣年间（1023-1032年），是中国现存最早的规模较大的宋代木构建筑。殿前鱼沼飞梁、侍女像等均为珍贵文物。"},
+  {id:32,name:"丰镐遗址",aka:"西周都城遗址",province:"陕西",city:"西安·长安",batch:"第一批",year:1961,type:"古遗址",sub:"都城遗址",date:"1961年3月4日",visit:"待补充",img:"img/032.jpg",desc:"丰镐遗址是西周王朝的都城遗址，丰京和镐京分别位于今西安市长安区沣河两岸。始建于文王迁丰（约前1059年），武王灭商后建镐京，是中国历史上最早有文献记载的都城之一，具有极高的历史价值。"}
 ];
 
-var selProv = {}, selBatch = {}, selType = {};
+var selProv={}, selBatch={}, selType={};
 
-function uniq(k){ var s={}; DATA.forEach(function(d){s[d[k]]=1;}); return Object.keys(s).sort(); }
+function uniq(k){var s={};DATA.forEach(function(d){s[d[k]]=1;});return Object.keys(s).sort();}
 
-function chips(pid, vals, sel){
-  var c=document.getElementById(pid); c.innerHTML='';
+function buildChips(pid,vals,sel){
+  var c=document.getElementById(pid);c.innerHTML='';
   vals.forEach(function(v){
     var b=document.createElement('button');
     b.className='chip'+(sel[v]?' on':'');
     b.textContent=v;
     b.onclick=function(){
-      if(sel[v]) delete sel[v]; else sel[v]=1;
+      if(sel[v])delete sel[v];else sel[v]=1;
       b.classList.toggle('on',!!sel[v]);
       render();
     };
@@ -229,9 +210,9 @@ function chips(pid, vals, sel){
 
 function filtered(){
   return DATA.filter(function(d){
-    if(Object.keys(selProv).length && !selProv[d.province]) return false;
-    if(Object.keys(selBatch).length && !selBatch[d.batch]) return false;
-    if(Object.keys(selType).length && !selType[d.type]) return false;
+    if(Object.keys(selProv).length&&!selProv[d.province])return false;
+    if(Object.keys(selBatch).length&&!selBatch[d.batch])return false;
+    if(Object.keys(selType).length&&!selType[d.type])return false;
     return true;
   });
 }
@@ -239,7 +220,7 @@ function filtered(){
 function render(){
   var items=filtered();
   document.getElementById('ct').innerHTML='共 <b>'+items.length+'</b> 处国保单位';
-  var g=document.getElementById('grid'); g.innerHTML='';
+  var g=document.getElementById('grid');g.innerHTML='';
   if(!items.length){
     g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:50px;color:#9ca3af">没有符合条件的记录</div>';
     return;
@@ -247,26 +228,25 @@ function render(){
   items.forEach(function(d){
     var card=document.createElement('div');
     card.className='card';
-    var imgHtml = d.img
-      ? '<img class="cimg" src="'+d.img+'" alt="'+d.name+'">'
-      : '<div class="cimg-ph"><span>🏛</span><small>照片待上传</small></div>';
-    card.innerHTML = imgHtml +
+    var imgH=d.img?'<img class="cimg" src="'+d.img+'" alt="'+d.name+'" loading="lazy">':
+      '<div class="cimg-ph"><span>🏛</span><small>照片待上传</small></div>';
+    card.innerHTML=imgH+
       '<span class="cbadge">'+d.batch+'</span>'+
       '<div class="cname">'+d.name+'</div>'+
       '<div class="cmeta">'+
-        '<div class="crow">📍 '+d.province+' · '+d.city+'</div>'+
-        '<div class="crow">🏷 '+d.type+' · '+d.sub+'</div>'+
-        '<div class="crow">📅 '+d.date+'</div>'+
+        '<div>📍 '+d.province+' · '+d.city+'</div>'+
+        '<div>🏷 '+d.type+' · '+d.sub+'</div>'+
+        '<div>📅 '+d.date+'</div>'+
       '</div>';
-    card.onclick=function(){ openLb(d); };
+    card.onclick=function(){openLb(d);};
     g.appendChild(card);
   });
 }
 
 function openLb(d){
-  document.getElementById('limg').innerHTML = d.img
-    ? '<img src="'+d.img+'" alt="'+d.name+'" style="width:100%;max-height:380px;object-fit:cover;display:block">'
-    : '<div class="lbox-ph">🏛</div>';
+  document.getElementById('limg').innerHTML=d.img?
+    '<img src="'+d.img+'" alt="'+d.name+'">':
+    '<div class="lbox-ph">🏛</div>';
   document.getElementById('ln').textContent=d.name;
   document.getElementById('la').textContent=d.aka||'';
   document.getElementById('lprov').textContent=d.province;
@@ -297,9 +277,18 @@ document.querySelectorAll('.tab').forEach(function(t){
   };
 });
 
-chips('pc',uniq('province'),selProv);
-chips('bc',uniq('batch'),selBatch);
-chips('tc',uniq('type'),selType);
+buildChips('fpc',uniq('province'),selProv);
+buildChips('fbc',uniq('batch'),selBatch);
+buildChips('ftc',uniq('type'),selType);
+
+var provs=uniq('province').length;
+var batches=uniq('batch').length;
+var types=uniq('type').length;
+document.getElementById('sc').textContent=DATA.length;
+document.getElementById('pc').textContent=provs;
+document.getElementById('bc').textContent=batches;
+document.getElementById('tc').textContent=types;
+
 render();
 </script>
 </body>
